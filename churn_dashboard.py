@@ -489,7 +489,20 @@ with tab3:
     # Heatmap — service combos
     st.markdown("**Service Adoption Correlation with Churn**")
     service_cols = ["OnlineSecurity", "TechSupport", "OnlineBackup", "DeviceProtection", "StreamingTV", "StreamingMovies"]
-    binary_svc = df[service_cols].applymap(lambda x: 1 if x == "Yes" else 0)
+    # Detect service-related columns safely
+    service_keywords = [
+    'OnlineSecurity', 'OnlineBackup', 'DeviceProtection',
+    'TechSupport', 'StreamingTV', 'StreamingMovies'
+    ]
+
+    service_cols = [col for col in df.columns if any(key in col for key in service_keywords)]
+
+# If encoded (most likely), use directly
+    binary_svc = df[service_cols]
+    
+    existing_cols = [col for col in service_cols if col in df.columns]
+    binary_svc = df[existing_cols].apply(lambda x: (x == "Yes").astype(int))
+
     binary_svc["Churn"] = df["Churn_binary"]
     corr = binary_svc.corr()[["Churn"]].drop("Churn").sort_values("Churn")
 
