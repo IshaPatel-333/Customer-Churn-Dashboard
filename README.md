@@ -12,4 +12,4 @@ Built a machine learning model to predict customer churn and developed an intera
 Python, Pandas, Scikit-learn, Streamlit
 
 ## Live Demo
-(Add link after deployment)
+https://dashboard-customer-churn.streamlit.app/
